@@ -11,6 +11,12 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "nuxt": "^3.7.3"
+    "@types/vue": "^2.0.0",
+    "nuxt": "^3.7.3",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@nuxt/types": "^2.17.1",
+    "axios": "^1.5.0"
   }
 }
