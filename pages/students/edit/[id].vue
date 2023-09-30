@@ -54,6 +54,7 @@ const { student, clearForm } = useForm();
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
+const base_url = useRuntimeConfig().public.base_url;
 
 const isLoading = ref(false);
 const isLoadingTitle = ref("Loading...");
@@ -95,7 +96,7 @@ const saveStudent = async () => {
 
 const submitStudentData = async (data: StudentData) => {
     try {
-        const response = await axios.patch(`http://localhost:8000/api/student/${id}`, data);
+        const response = await axios.patch(base_url + `/student/${id}`, data);
         alert(response.data.message);
         router.push('/students');
     } catch (error: any) { // Add the ': any' type assertion here
@@ -114,7 +115,7 @@ const submitStudentData = async (data: StudentData) => {
 
 const getStudent = async () => { // Add type 'string' for the id parameter
     try {
-        const response = await axios.get(`http://localhost:8000/api/student/${id}`);
+        const response = await axios.get(base_url + `/student/${id}`);
         const data = response.data; // Assuming your API response contains student data
 
         // Update the student object with the fetched data

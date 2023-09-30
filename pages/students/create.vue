@@ -54,6 +54,7 @@ const isLoading = ref(false);
 const isLoadingTitle = ref("Loading...");
 const errorList = ref<ErrorList>({});
 const router = useRouter();
+const base_url = useRuntimeConfig().public.base_url;
 
 // Methods Section
 const formatErrors = (errors: string[] | null | undefined): string => {
@@ -91,7 +92,7 @@ const saveStudent = async () => {
 
 const submitStudentData = async (data: StudentData) => {
 
-    axios.post('http://localhost:8000/api/student', data).then(res => {
+    axios.post( base_url +'/student', data).then(res => {
         alert(res.data.message);
         router.push('/students');
     }).catch(function (error) {

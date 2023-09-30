@@ -29,7 +29,12 @@ export default defineNuxtConfig({
           type:'text/javascript',
         }
       ]
-    }
+    },
   },
   devtools: { enabled: true },
+  runtimeConfig:{
+    public:{
+      base_url : process.env.API_BASE_URL,
+    }
+  },
 })

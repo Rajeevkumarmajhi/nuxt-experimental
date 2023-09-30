@@ -57,6 +57,7 @@ import Loading from '../../components/Loading.vue';
 const studentsList = ref<StudentData[]>([]);
 const errorList = ref<ErrorList>({});
 const isLoading = ref(false);
+const base_url = useRuntimeConfig().public.base_url;
 
 const handleApiError = (error: any) => {
     if (error.response) {
@@ -72,7 +73,7 @@ const handleApiError = (error: any) => {
 const getStudentList = async () => {
     try {
         isLoading.value = true;
-        const res = await axios.get('http://localhost:8000/api/student'); // Replace with your API endpoint
+        const res = await axios.get(base_url + '/student'); // Replace with your API endpoint
         // Assuming the API response is an array of student objects
         studentsList.value = res.data.data;
         isLoading.value = false;
@@ -86,7 +87,7 @@ const deleteStudent = async (id: number) => {
 
     if (confirmed) {
         try {
-            await axios.delete(`http://localhost:8000/api/student/${id}`);
+            await axios.delete(base_url + `/student/${id}`);
             getStudentList();
         } catch (error) {
             console.error('Error deleting student:', error);
