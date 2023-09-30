@@ -2,7 +2,7 @@
     <div class="mt-5 container">
         <div class="card">
             <div class="card-header">
-                <h4>Add Student
+                <h4>Edit Student
                     <NuxtLink class="btn btn-danger float-end" to="/students">Students</NuxtLink>
                 </h4>
             </div>
@@ -42,18 +42,22 @@
 
 <script setup lang="ts">
 // Setup Section
-import { ref } from 'vue';
-import Loading from '../../components/Loading.vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useForm } from '../../helpers/students/forms/FormHandling';
-import { StudentData, ErrorList } from '../../helpers/students/interfaces/StudentInterface';
+
+
+import Loading from '../../../components/Loading.vue';
+import { useForm } from '../../../helpers/students/forms/FormHandling';
+import { StudentData, ErrorList } from '../../../helpers/students/interfaces/StudentInterface';
 
 const { student, clearForm } = useForm();
+const route = useRoute();
+const router = useRouter();
+const id = route.params.id;
 
 const isLoading = ref(false);
 const isLoadingTitle = ref("Loading...");
 const errorList = ref<ErrorList>({});
-const router = useRouter();
 
 // Methods Section
 const formatErrors = (errors: string[] | null | undefined): string => {
@@ -90,15 +94,15 @@ const saveStudent = async () => {
 };
 
 const submitStudentData = async (data: StudentData) => {
-
-    axios.post('http://localhost:8000/api/student', data).then(res => {
-        alert(res.data.message);
+    try {
+        const response = await axios.patch(`http://localhost:8000/api/student/${id}`, data);
+        alert(response.data.message);
         router.push('/students');
-    }).catch(function (error) {
+    } catch (error: any) { // Add the ': any' type assertion here
         if (error.response) {
             handleApiError(error);
         }
-    });
+    }
 
     return new Promise<void>((resolve, reject) => {
         setTimeout(() => {
@@ -107,4 +111,23 @@ const submitStudentData = async (data: StudentData) => {
         }, 2000); // Simulate a 2-second delay
     });
 };
+
+const getStudent = async () => { // Add type 'string' for the id parameter
+    try {
+        const response = await axios.get(`http://localhost:8000/api/student/${id}`);
+        const data = response.data; // Assuming your API response contains student data
+
+        // Update the student object with the fetched data
+        student.value.name = data.data.name;
+        student.value.course = data.data.course;
+        student.value.email = data.data.email;
+        student.value.phone = data.data.phone;
+    } catch (error) {
+        console.error('Error fetching student data:', error);
+    }
+};
+
+onMounted(() => {
+    getStudent(); // Pass the id to fetch student data
+});
 </script>
