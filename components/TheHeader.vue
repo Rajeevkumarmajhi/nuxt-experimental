@@ -22,6 +22,9 @@ import { NuxtLink } from '#build/components';
                     <li class="nav-item">
                         <NuxtLink class="nav-link active" aria-current="page" to="/students">Students</NuxtLink>
                     </li>
+                    <li class="nav-item">
+                        <NuxtLink class="nav-link active" aria-current="page" to="/login">Login</NuxtLink>
+                    </li>
 
                 </ul>
             </div>
